@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 )
 
 var pl = fmt.Println
@@ -97,9 +96,8 @@ func main() {
 	currentAttempt := 0
 	wordToGuess := getRandomWord()
 	placeholder := getLettersPlaceholders(wordToGuess)
-	gamePlaying := true
 
-	for gamePlaying {
+	for true {
 		// Clear terminal window
 		clearShell()
 
@@ -112,7 +110,6 @@ func main() {
 		// Get a letter from the user
 		// fmt.Printf("\n [DEBUG] word: %s", wordToGuess)
 		fmt.Print("\nGuess a letter: ")
-
 		userGuess, err := reader.ReadString('\n')
 
 		if err != nil {
@@ -122,10 +119,10 @@ func main() {
 		// Removing delimiter from user input
 		userGuess = strings.TrimSuffix(userGuess, "\n")
 
-		// A. If they guessed letter in word
 		// Add to correctLetters
 		if strings.Contains(wordToGuess, userGuess) {
 			guessedLetters += userGuess
+			correctLetters = append(correctLetters, userGuess)
 
 			// Updating placeholder
 			letterIndexes := getLetterIndexes(wordToGuess, userGuess)
@@ -134,24 +131,34 @@ func main() {
 			wrongGuesses = append(wrongGuesses, userGuess)
 			currentAttempt++
 		}
+
+		// Check if player lost
+		if currentAttempt == len(hangmanArr) {
+			pl("You lost.", "The word was", wordToGuess)
+			break
+		}
+
+		// Check if player won
+		if !strings.ContainsAny(placeholder, "_") {
+			clearShell()
+			pl("You won! the word was", wordToGuess)
+			break
+		}
 	}
 }
 
 // Display current game board.
 func displayGameBoard(attempt int) {
-	if attempt >= len(hangmanArr) {
-		pl("YOU DIED")
-	} else {
+	if attempt < len(hangmanArr) {
 		pl(hangmanArr[attempt])
+	} else {
+		pl(hangmanArr[len(hangmanArr)-1])
 	}
 }
 
 // Get a random word from words array.
 func getRandomWord() string {
-	milliseconds := time.Now().UnixMilli()
-	rand.Seed(milliseconds)
 	wordIndex := rand.Intn(len(words))
-
 	return words[wordIndex]
 }
 
