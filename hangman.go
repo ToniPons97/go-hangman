@@ -117,6 +117,9 @@ func main() {
 		// Removing delimiter from user input
 		userGuess = strings.TrimSuffix(userGuess, "\n")
 
+		// Trimming white spaces
+		userGuess = strings.TrimSpace(userGuess)
+
 		// Add to correctLetters
 		if strings.Contains(wordToGuess, userGuess) {
 			guessedLetters += userGuess
