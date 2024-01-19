@@ -88,7 +88,6 @@ var words = []string{
 
 var randomWord string
 var guessedLetters string
-var wrongGuesses []string
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
@@ -126,7 +125,6 @@ func main() {
 			letterIndexes := getLetterIndexes(wordToGuess, userGuess)
 			placeholder = replacePlaceholder(placeholder, userGuess, letterIndexes)
 		} else {
-			wrongGuesses = append(wrongGuesses, userGuess)
 			currentAttempt++
 		}
 
