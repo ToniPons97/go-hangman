@@ -88,7 +88,6 @@ var words = []string{
 
 var randomWord string
 var guessedLetters string
-var correctLetters []string
 var wrongGuesses []string
 
 func main() {
@@ -122,7 +121,6 @@ func main() {
 		// Add to correctLetters
 		if strings.Contains(wordToGuess, userGuess) {
 			guessedLetters += userGuess
-			correctLetters = append(correctLetters, userGuess)
 
 			// Updating placeholder
 			letterIndexes := getLetterIndexes(wordToGuess, userGuess)
